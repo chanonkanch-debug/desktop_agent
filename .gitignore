@@ -1,0 +1,19 @@
+# Virtual environment — recreated by setup.bat
+venv/
+
+# Chat history (stored outside repo in ~/.desktop_agent/)
+history/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs and temp
+*.log
+*.tmp

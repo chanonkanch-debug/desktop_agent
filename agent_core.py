@@ -36,8 +36,9 @@ If you are stuck, say exactly:
 DEFAULTS = {
     "model": "qwen2.5:14b",
     "api_base": "http://localhost:11434",
-    "context_window": 8000,
-    "max_tokens": 2000,
+    "context_window": 16000,
+    "max_tokens": 4000,
+    "temperature": 0.1,
     "auto_run": True,
     "offline": True,
     "custom_instructions": _DEFAULT_INSTRUCTIONS,
@@ -84,6 +85,7 @@ def build_interpreter(cfg: dict):
     interpreter.llm.api_base       = cfg["api_base"]
     interpreter.llm.context_window = cfg["context_window"]
     interpreter.llm.max_tokens     = cfg["max_tokens"]
+    interpreter.llm.temperature    = cfg.get("temperature", 0.1)
     interpreter.custom_instructions = cfg["custom_instructions"]
     interpreter.messages = []
 

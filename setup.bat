@@ -110,10 +110,11 @@ echo  [OK] Virtual environment already exists.
 :venv_done
 
 :: ── 4. Install packages ──────────────────────────────────────────────────
-echo  [INFO] Installing packages (may take a minute)...
+echo  [INFO] Installing packages (may take a few minutes)...
 call venv\Scripts\activate.bat
 venv\Scripts\python.exe -m pip install --upgrade pip -q
-venv\Scripts\python.exe -m pip install open-interpreter pyyaml customtkinter -q
+venv\Scripts\python.exe -m pip install "setuptools<70" -q
+venv\Scripts\python.exe -m pip install -r requirements.txt -q
 if errorlevel 1 (
     echo  [ERROR] Package installation failed.
     pause & exit /b 1

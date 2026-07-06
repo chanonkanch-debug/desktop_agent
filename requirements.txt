@@ -1,3 +1,25 @@
+# Core — pin setuptools to avoid pkg_resources missing in 70+
+setuptools<70
 open-interpreter
 pyyaml
 customtkinter
+
+# PDF
+pymupdf
+
+# Images
+Pillow
+
+# Data / spreadsheets
+pandas
+openpyxl
+xlrd
+
+# Word documents
+python-docx
+
+# Web / HTML scraping
+beautifulsoup4
+
+# Utilities
+chardet
