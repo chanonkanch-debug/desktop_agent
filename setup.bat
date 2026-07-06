@@ -141,7 +141,7 @@ echo  [OK] launch.bat created.
 set "LNK=%USERPROFILE%\Desktop\Desktop Agent.lnk"
 set "LAUNCH=%~dp0launch.bat"
 
-powershell -NoProfile -Command "$sh=New-Object -ComObject WScript.Shell; $sc=$sh.CreateShortcut('%LNK%'); $sc.TargetPath='%LAUNCH%'; $sc.WorkingDirectory='%~dp0'; $sc.IconLocation='%SystemRoot%\System32\shell32.dll,43'; $sc.WindowStyle=7; $sc.Save()" >nul 2>&1
+powershell -NoProfile -Command "$sh=New-Object -ComObject WScript.Shell; $sc=$sh.CreateShortcut('%LNK%'); $sc.TargetPath='%LAUNCH%'; $sc.WorkingDirectory='%~dp0'; $sc.IconLocation='%~dp0icon.ico'; $sc.WindowStyle=7; $sc.Save()" >nul 2>&1
 
 if exist "%LNK%" (
     echo  [OK] "Desktop Agent" shortcut created on your Desktop.

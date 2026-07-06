@@ -104,6 +104,84 @@ STRINGS: dict[str, dict[str, str]] = {
         "sys_stopped":      "⏹ Stopped.",
         "sys_max_errors":   "⚠ Stopped after {n} consecutive errors. Try a simpler or more specific request.",
         "sys_timeout":      "⏹ Timed out after {m} minutes. The task may be too complex — try breaking it into smaller steps.",
+        "welcome": """\
+Welcome to Desktop Agent
+Your personal AI assistant for file management and productivity.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📂  STEP 1 — SET YOUR WORKING FOLDER  (Required)
+    Click Browse at the top to choose a folder.
+    The agent will default to this location for every task.
+    Tip: pick the specific folder you are working in — not a broad root like C:\\.
+
+🗣  WHAT YOU CAN ASK
+    • "What files are in this folder?"
+    • "Summarize transcript.pdf"
+    • "Organize my files by type"
+    • "Clean up and fix the formatting in data.csv"
+    • "Rename all images to include today's date"
+    • "Find all Word documents and list their sizes"
+
+🧠  HOW THE AGENT UNDERSTANDS LOCATION
+    • "the folder", "my files", "here" → your working folder
+    • "Documents", "Downloads", etc. → agent will suggest common paths for you to click
+    • Always stays in your working folder unless you pick a new one
+
+⚡  QUICK ACTIONS  (buttons above the input box)
+    📂 Organize Downloads  — sorts your Downloads folder by file type
+    📄 Summarize a file    — pick any file for an instant summary
+    🔍 Find files          — search file names or contents
+    🖥 What's on Desktop?  — see what's on your Desktop
+
+💡  TIPS FOR BEST RESULTS
+    • Be specific: "rename the 3 PDF files" works better than "fix my files"
+    • The agent plans before acting — read the plan to catch mistakes early
+    • If the agent stops, click ▶ Continue to nudge it forward
+    • Use New Chat (sidebar) to start fresh for a completely new task
+    • Auto-run is ON — code runs automatically without asking for approval
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Ready when you are. Set a working folder and start typing!\
+""",
+        "welcome_th": """\
+ยินดีต้อนรับสู่ Desktop Agent
+ผู้ช่วย AI ส่วนตัวสำหรับจัดการไฟล์และเพิ่มประสิทธิภาพการทำงาน
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📂  ขั้นตอนที่ 1 — เลือกโฟลเดอร์ที่ใช้งาน  (จำเป็น)
+    กดปุ่ม Browse ด้านบนเพื่อเลือกโฟลเดอร์
+    Agent จะใช้โฟลเดอร์นี้เป็นค่าเริ่มต้นสำหรับทุกงาน
+    เคล็ดลับ: เลือกโฟลเดอร์เฉพาะที่คุณกำลังทำงานอยู่
+
+🗣  สิ่งที่คุณถามได้
+    • "มีไฟล์อะไรในโฟลเดอร์นี้?"
+    • "สรุปเนื้อหา transcript.pdf"
+    • "จัดระเบียบไฟล์แยกตามประเภท"
+    • "แก้ไขและจัดรูปแบบข้อมูลใน data.csv"
+    • "เปลี่ยนชื่อรูปภาพทุกใบให้มีวันที่"
+    • "ค้นหาไฟล์ Word ทั้งหมดและแสดงขนาด"
+
+🧠  Agent เข้าใจตำแหน่งไฟล์อย่างไร
+    • "โฟลเดอร์นี้", "ไฟล์ของฉัน", "ที่นี่" → โฟลเดอร์ที่คุณเลือกไว้
+    • "Documents", "Downloads" ฯลฯ → Agent จะแนะนำเส้นทางให้คุณกด
+    • ทำงานในโฟลเดอร์ที่เลือกเสมอ ยกเว้นคุณเลือกใหม่
+
+⚡  คำสั่งด่วน  (ปุ่มเหนือช่องพิมพ์)
+    📂 จัดระเบียบ Downloads  — แยกไฟล์ใน Downloads ตามประเภท
+    📄 สรุปไฟล์             — เลือกไฟล์เพื่อรับสรุปทันที
+    🔍 ค้นหาไฟล์            — ค้นหาชื่อไฟล์หรือเนื้อหา
+    🖥 ไฟล์บน Desktop        — ดูสิ่งที่อยู่บน Desktop
+
+💡  เคล็ดลับ
+    • ระบุให้ชัดเจน: "เปลี่ยนชื่อไฟล์ PDF 3 ไฟล์" ดีกว่า "แก้ไขไฟล์"
+    • Agent วางแผนก่อนทำงาน — อ่านแผนเพื่อตรวจสอบความถูกต้อง
+    • หาก Agent หยุด กด ▶ ทำต่อ เพื่อดำเนินการต่อ
+    • ใช้ New Chat (แถบด้านข้าง) เพื่อเริ่มงานใหม่
+    • Auto-run เปิดอยู่ — โค้ดทำงานอัตโนมัติโดยไม่ต้องยืนยัน
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+พร้อมแล้ว! เลือกโฟลเดอร์แล้วเริ่มพิมพ์ได้เลย\
+""",
         # dialogs
         "d_no_file":        "No file",
         "d_no_file_msg":    "Open a text file first.",
@@ -239,29 +317,81 @@ STRINGS: dict[str, dict[str, str]] = {
 HISTORY_DIR = Path.home() / ".desktop_agent" / "history"
 HISTORY_DIR.mkdir(parents=True, exist_ok=True)
 
-FONT_BASE = 14
+FONT_BASE = 17
 SIDEBAR_W = 215
 
 _WIN_PATH = re.compile(r'[A-Za-z]:\\(?:[^\s\n"\'<>|?*:]+\\)*[^\s\n"\'<>|?*:]*')
 
+_ICON_PATH = Path(__file__).parent / "icon.ico"
+
+def _build_icon() -> None:
+    """Generate icon.ico next to app.py using Pillow. Skips if already exists."""
+    if _ICON_PATH.exists():
+        return
+    try:
+        from PIL import Image, ImageDraw, ImageFont
+        imgs = []
+        for size in (256, 64, 48, 32, 16):
+            img = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+            d   = ImageDraw.Draw(img)
+            # rounded square background
+            r = size // 6
+            d.rounded_rectangle([0, 0, size - 1, size - 1],
+                                 radius=r, fill=(13, 13, 20, 255))
+            # blue circle
+            pad = size // 8
+            d.ellipse([pad, pad, size - pad - 1, size - pad - 1],
+                      fill=(59, 130, 246, 255))
+            # white "D" letter
+            try:
+                fnt = ImageFont.truetype(
+                    r"C:\Windows\Fonts\segoeuib.ttf", int(size * 0.52))
+            except Exception:
+                fnt = ImageFont.load_default()
+            text = "D"
+            bb   = d.textbbox((0, 0), text, font=fnt)
+            tx   = (size - (bb[2] - bb[0])) // 2 - bb[0]
+            ty   = (size - (bb[3] - bb[1])) // 2 - bb[1]
+            d.text((tx, ty), text, fill=(255, 255, 255, 255), font=fnt)
+            imgs.append(img)
+        imgs[0].save(
+            str(_ICON_PATH), format="ICO",
+            sizes=[(img.width, img.height) for img in imgs],
+            append_images=imgs[1:],
+        )
+    except Exception:
+        pass
+
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
 
-CLR_BG       = "#1e1e2e"
-CLR_SIDEBAR  = "#181825"
-CLR_PANEL    = "#24243e"
-CLR_USER     = "#89dceb"
-CLR_AGENT    = "#cdd6f4"
-CLR_CODE     = "#a6e3a1"
-CLR_SYSTEM   = "#7f849c"
-CLR_ERROR    = "#f38ba8"
-CLR_GREEN    = "#40a02b"
-CLR_PURPLE   = "#8839ef"
-CLR_BLUE     = "#1e66f5"
-CLR_ORANGE   = "#e08a00"
-CLR_NAV_ACT  = "#313244"
-CLR_NAV_IDLE = "#1e1e2e"
-CLR_ACTION   = "#1a2f4a"
+# ── design tokens ─────────────────────────────────────────────────────────────
+CLR_BG       = "#0d0d14"   # main background — deep navy-black
+CLR_SIDEBAR  = "#08080f"   # sidebar — darkest surface
+CLR_PANEL    = "#13131f"   # chat box background
+CLR_SURFACE  = "#1a1a2a"   # cards, input fields
+CLR_BORDER   = "#252538"   # subtle borders
+
+CLR_USER     = "#93c5fd"   # user message text — sky blue
+CLR_AGENT    = "#e2e8f0"   # agent text — near white
+CLR_CODE     = "#86efac"   # code accent — soft green
+CLR_SYSTEM   = "#555577"   # muted system text
+CLR_ERROR    = "#fca5a5"   # error red
+CLR_SUCCESS  = "#86efac"   # success green
+
+CLR_BLUE     = "#3b82f6"   # primary action blue
+CLR_BLUE_HOV = "#2563eb"   # hover state
+CLR_ORANGE   = "#f59e0b"   # warning / orange accent
+CLR_GREEN    = "#22c55e"
+CLR_PURPLE   = "#a78bfa"
+
+CLR_NAV_ACT  = "#1e1e30"   # active nav background
+CLR_NAV_IDLE = "transparent"
+CLR_ACTION   = "#0f1f35"   # action bar background
+
+# bubble colours for chat messages
+CLR_USER_BG  = "#0f2340"   # user message bubble
+CLR_AGENT_BG = "#141424"   # agent message bubble (subtle)
 
 
 # ── ThinkFilter ───────────────────────────────────────────────────────────────
@@ -313,13 +443,13 @@ def _treeview_style() -> None:
     except tk.TclError:
         pass
     style.configure("DA.Treeview",
-                    background="#313244", foreground="#cdd6f4",
-                    fieldbackground="#313244", rowheight=26,
+                    background="#13131f", foreground="#e2e8f0",
+                    fieldbackground="#13131f", rowheight=28,
                     font=("Segoe UI", 13))
     style.configure("DA.Treeview.Heading",
-                    background="#45475a", foreground="#cdd6f4",
-                    font=("Segoe UI", 13, "bold"))
-    style.map("DA.Treeview", background=[("selected", "#1e66f5")])
+                    background="#1a1a2a", foreground="#64748b",
+                    font=("Segoe UI", 12, "bold"))
+    style.map("DA.Treeview", background=[("selected", "#1e3a5c")])
 
 
 def _open_explorer(path: str) -> None:
@@ -352,10 +482,13 @@ LANG_ICONS: dict[str, str] = {
 class DesktopAgentApp(ctk.CTk):
 
     def __init__(self) -> None:
+        _build_icon()
         super().__init__()
         self.geometry("1300x820")
         self.minsize(980, 660)
         self.configure(fg_color=CLR_BG)
+        if _ICON_PATH.exists():
+            self.wm_iconbitmap(str(_ICON_PATH))
 
         self._lang: str = "en"
         self._i18n: list[callable] = []   # registered updaters for language switch
@@ -383,6 +516,7 @@ class DesktopAgentApp(ctk.CTk):
         self._build_views()
         self._switch("chat")
         self._apply_lang()         # initial render in English
+        self._show_welcome()
 
         self.title(self._s("app_title"))
         self.after(100, self._poll)
@@ -408,10 +542,10 @@ class DesktopAgentApp(ctk.CTk):
         # dynamic-state labels that depend on both language AND current state
         if self._focus_path:
             self._focus_label.configure(text=Path(self._focus_path).name,
-                                        text_color="#89b4fa")
+                                        text_color="#93c5fd")
         else:
             self._focus_label.configure(text=self._s("focus_none"),
-                                        text_color="#f38ba8")
+                                        text_color=CLR_ERROR)
         if not self._current_file:
             self._file_label.configure(text=self._s("no_file"))
         self._tree.heading("#0", text=self._s("tree_col"))
@@ -427,55 +561,81 @@ class DesktopAgentApp(ctk.CTk):
         sb.pack(side="left", fill="y")
         sb.pack_propagate(False)
 
-        lbl = ctk.CTkLabel(sb, text="", font=("Segoe UI", 17, "bold"),
-                            text_color="#cdd6f4")
-        lbl.pack(pady=(24, 18))
+        # thin right border line
+        border = ctk.CTkFrame(sb, width=1, fg_color=CLR_BORDER, corner_radius=0)
+        border.pack(side="right", fill="y")
+
+        inner = ctk.CTkFrame(sb, fg_color="transparent")
+        inner.pack(fill="both", expand=True, padx=(0, 1))
+
+        # logo area
+        logo_row = ctk.CTkFrame(inner, fg_color="transparent")
+        logo_row.pack(fill="x", padx=14, pady=(22, 20))
+        ctk.CTkLabel(logo_row, text="✦", font=("Segoe UI", 18),
+                     text_color=CLR_PURPLE).pack(side="left", padx=(0, 8))
+        lbl = ctk.CTkLabel(logo_row, text="", font=("Segoe UI", 15, "bold"),
+                            text_color="#e2e8f0")
+        lbl.pack(side="left")
         self._tr(lbl, "app_title")
 
+        # nav buttons
         self._nav_btns: dict[str, ctk.CTkButton] = {}
         for key, view in [("nav_chat", "chat"),
                            ("nav_files", "files"),
                            ("nav_settings", "settings")]:
             btn = ctk.CTkButton(
-                sb, text="", width=SIDEBAR_W - 20, height=46,
-                font=("Segoe UI", 14), anchor="w", corner_radius=10,
+                inner, text="", width=SIDEBAR_W - 24, height=42,
+                font=("Segoe UI", 13), anchor="w", corner_radius=8,
                 fg_color=CLR_NAV_IDLE, hover_color=CLR_NAV_ACT,
-                text_color="#cdd6f4",
+                text_color="#94a3b8",
                 command=lambda v=view: self._switch(v),
             )
-            btn.pack(padx=10, pady=3)
+            btn.pack(padx=12, pady=2)
             self._nav_btns[view] = btn
             self._tr(btn, key)
 
+        # thin divider
+        ctk.CTkFrame(inner, height=1, fg_color=CLR_BORDER).pack(
+            fill="x", padx=12, pady=(14, 10))
+
         # recent chats
-        lbl_rc = ctk.CTkLabel(sb, text="", font=("Segoe UI", 11, "bold"),
-                               text_color="#6c7086")
-        lbl_rc.pack(anchor="w", padx=14, pady=(18, 4))
+        lbl_rc = ctk.CTkLabel(inner, text="", font=("Segoe UI", 10, "bold"),
+                               text_color="#334155")
+        lbl_rc.pack(anchor="w", padx=16, pady=(0, 6))
         self._tr(lbl_rc, "recent_chats")
 
         self._history_frame = ctk.CTkScrollableFrame(
-            sb, fg_color="transparent", height=200)
-        self._history_frame.pack(fill="x", padx=6, pady=(0, 4))
+            inner, fg_color="transparent", height=180,
+            scrollbar_button_color=CLR_BORDER,
+            scrollbar_button_hover_color=CLR_NAV_ACT)
+        self._history_frame.pack(fill="x", padx=8, pady=(0, 6))
 
-        btn_nc = ctk.CTkButton(sb, text="", width=SIDEBAR_W - 20, height=34,
-                               font=("Segoe UI", 12), fg_color="#2a2a3e",
-                               hover_color="#3a3a5e", text_color="#cdd6f4",
-                               command=self._new_chat)
-        btn_nc.pack(padx=10, pady=(0, 6))
+        btn_nc = ctk.CTkButton(inner, text="", width=SIDEBAR_W - 24, height=32,
+                               font=("Segoe UI", 12), fg_color=CLR_SURFACE,
+                               hover_color=CLR_NAV_ACT, text_color="#64748b",
+                               border_width=1, border_color=CLR_BORDER,
+                               corner_radius=8, command=self._new_chat)
+        btn_nc.pack(padx=12, pady=(0, 4))
         self._tr(btn_nc, "new_chat")
 
-        # language toggle
+        # language toggle — bottom of sidebar
         self._btn_lang = ctk.CTkButton(
-            sb, text="", width=SIDEBAR_W - 20, height=36,
-            font=("Segoe UI", 12), fg_color="#2a3a2a", hover_color="#3a4a3a",
-            text_color="#a6e3a1", command=self._toggle_lang)
-        self._btn_lang.pack(padx=10, pady=(0, 6))
+            inner, text="", width=SIDEBAR_W - 24, height=32,
+            font=("Segoe UI", 11), fg_color="transparent",
+            hover_color=CLR_NAV_ACT, text_color=CLR_PURPLE,
+            border_width=1, border_color=CLR_BORDER,
+            corner_radius=8, command=self._toggle_lang)
+        self._btn_lang.pack(side="bottom", padx=12, pady=(0, 12))
         self._tr(self._btn_lang, "lang_btn")
 
-        self._status = ctk.CTkLabel(sb, text="", font=("Segoe UI", 12),
+        self._status = ctk.CTkLabel(inner, text="", font=("Segoe UI", 11),
                                      text_color=CLR_SYSTEM)
-        self._status.pack(side="bottom", pady=14)
+        self._status.pack(side="bottom", pady=(0, 4))
         self._tr(self._status, "status_start")
+
+        # thin divider above status
+        ctk.CTkFrame(inner, height=1, fg_color=CLR_BORDER).pack(
+            side="bottom", fill="x", padx=12, pady=(0, 4))
 
         self._refresh_history_list()
 
@@ -498,109 +658,162 @@ class DesktopAgentApp(ctk.CTk):
             else:
                 frame.place_forget()
         for k, btn in self._nav_btns.items():
-            btn.configure(fg_color=CLR_NAV_ACT if k == view else CLR_NAV_IDLE)
+            if k == view:
+                btn.configure(fg_color=CLR_NAV_ACT, text_color="#e2e8f0",
+                               font=("Segoe UI", 13, "bold"))
+            else:
+                btn.configure(fg_color=CLR_NAV_IDLE, text_color="#94a3b8",
+                               font=("Segoe UI", 13))
 
     # ── chat view ─────────────────────────────────────────────────────────────
 
     def _build_chat(self) -> ctk.CTkFrame:
         frame = ctk.CTkFrame(self._main, corner_radius=0, fg_color=CLR_BG)
 
-        # header
-        hdr = ctk.CTkFrame(frame, fg_color="transparent")
-        hdr.pack(fill="x", padx=24, pady=(18, 4))
+        # ── header ────────────────────────────────────────────────────────────
+        hdr = ctk.CTkFrame(frame, fg_color=CLR_SIDEBAR, corner_radius=0, height=54)
+        hdr.pack(fill="x")
+        hdr.pack_propagate(False)
 
-        lbl_title = ctk.CTkLabel(hdr, text="", font=("Segoe UI", 18, "bold"),
-                                  text_color="#cdd6f4")
-        lbl_title.pack(side="left")
+        lbl_title = ctk.CTkLabel(hdr, text="", font=("Segoe UI", 14, "bold"),
+                                  text_color="#e2e8f0")
+        lbl_title.pack(side="left", padx=24)
         self._tr(lbl_title, "chat_title")
 
-        btn_aplus = ctk.CTkButton(hdr, text="A+", width=36, height=30,
-                                   font=("Segoe UI", 12), fg_color="#313244",
-                                   hover_color="#45475a",
-                                   command=lambda: self._change_font(+1))
-        btn_aplus.pack(side="right", padx=(4, 0))
+        # font size controls — subtle pill buttons on the right
+        for symbol, delta in [("A−", -1), ("A+", +1)]:
+            ctk.CTkButton(hdr, text=symbol, width=32, height=28,
+                           font=("Segoe UI", 11), fg_color=CLR_SURFACE,
+                           hover_color=CLR_NAV_ACT, text_color="#64748b",
+                           border_width=1, border_color=CLR_BORDER,
+                           corner_radius=6,
+                           command=lambda d=delta: self._change_font(d)
+                           ).pack(side="right", padx=(0, 6), pady=13)
 
-        btn_aminus = ctk.CTkButton(hdr, text="A−", width=36, height=30,
-                                    font=("Segoe UI", 12), fg_color="#313244",
-                                    hover_color="#45475a",
-                                    command=lambda: self._change_font(-1))
-        btn_aminus.pack(side="right", padx=(4, 0))
+        # thin bottom border on header
+        ctk.CTkFrame(frame, height=1, fg_color=CLR_BORDER, corner_radius=0).pack(fill="x")
 
-        # focus bar
-        focus_bar = ctk.CTkFrame(frame, fg_color="#1e2a3a", corner_radius=10)
-        focus_bar.pack(fill="x", padx=24, pady=(0, 6))
+        # ── focus bar ─────────────────────────────────────────────────────────
+        focus_bar = ctk.CTkFrame(frame, fg_color=CLR_SURFACE,
+                                  corner_radius=0, height=38)
+        focus_bar.pack(fill="x")
+        focus_bar.pack_propagate(False)
         self._focus_bar = focus_bar
 
-        lbl_fp = ctk.CTkLabel(focus_bar, text="", font=("Segoe UI", 12),
-                               text_color=CLR_SYSTEM)
-        lbl_fp.pack(side="left", padx=(10, 4))
-        self._tr(lbl_fp, "focus_prefix")
+        ctk.CTkLabel(focus_bar, text="", font=("Segoe UI", 11),
+                     text_color=CLR_SYSTEM).pack(side="left", padx=(16, 4))
+        # (registered via _tr below)
+        lbl_fp_txt = ctk.CTkLabel(focus_bar, text="", font=("Segoe UI", 11),
+                                   text_color=CLR_SYSTEM)
+        lbl_fp_txt.pack(side="left", padx=(0, 4))
+        self._tr(lbl_fp_txt, "focus_prefix")
 
-        self._focus_label = ctk.CTkLabel(focus_bar, text="", font=("Segoe UI", 12),
-                                          text_color="#cdd6f4", anchor="w")
-        self._focus_label.pack(side="left", fill="x", expand=True, padx=(0, 6))
+        self._focus_label = ctk.CTkLabel(focus_bar, text="", font=("Segoe UI", 11),
+                                          text_color="#e2e8f0", anchor="w")
+        self._focus_label.pack(side="left", fill="x", expand=True)
 
-        btn_fbrowse = ctk.CTkButton(focus_bar, text="", width=70, height=28,
-                                     font=("Segoe UI", 11), fg_color="#2a3a5a",
-                                     hover_color="#3a4a6a",
+        ctk.CTkButton(focus_bar, text="✕", width=24, height=22,
+                      font=("Segoe UI", 10), fg_color="transparent",
+                      hover_color="#2d1a1a", text_color="#475569",
+                      corner_radius=4,
+                      command=self._clear_focus_path).pack(side="right", padx=(0, 6))
+
+        btn_fbrowse = ctk.CTkButton(focus_bar, text="", width=64, height=24,
+                                     font=("Segoe UI", 11), fg_color=CLR_BLUE,
+                                     hover_color=CLR_BLUE_HOV, corner_radius=6,
                                      command=self._pick_focus_path)
-        btn_fbrowse.pack(side="right", padx=(4, 4))
+        btn_fbrowse.pack(side="right", padx=(0, 6))
         self._tr(btn_fbrowse, "btn_browse")
 
-        ctk.CTkButton(focus_bar, text="✕", width=28, height=28,
-                      font=("Segoe UI", 11), fg_color="#3a2a2a",
-                      hover_color="#5a3a3a",
-                      command=self._clear_focus_path).pack(side="right", padx=(0, 4))
+        ctk.CTkFrame(frame, height=1, fg_color=CLR_BORDER, corner_radius=0).pack(fill="x")
 
-        # chat display
+        # ── chat display ──────────────────────────────────────────────────────
         self._chat_box = ctk.CTkTextbox(
             frame, font=("Segoe UI", self._font_size),
             wrap="word", state="disabled", fg_color=CLR_PANEL,
-            text_color=CLR_AGENT, corner_radius=12)
-        self._chat_box.pack(fill="both", expand=True, padx=24, pady=(0, 6))
+            text_color=CLR_AGENT, corner_radius=0,
+            border_width=0)
+        self._chat_box.pack(fill="both", expand=True)
 
         tb = self._chat_box._textbox
+        tb.configure(padx=28, pady=16)
         fs = self._font_size
-        tb.tag_configure("user",        foreground=CLR_USER)
-        tb.tag_configure("agent",       foreground=CLR_AGENT)
-        tb.tag_configure("system",      foreground=CLR_SYSTEM)
-        tb.tag_configure("error",       foreground=CLR_ERROR)
-        tb.tag_configure("label",       foreground="#6c7086")
-        # code block – header bar with green bg, body with dark bg
-        tb.tag_configure("code_header", foreground="#0d1a0d",
-                         background="#a6e3a1",
-                         font=("Segoe UI", fs - 1, "bold"),
-                         spacing1=6, spacing3=4, lmargin1=8, lmargin2=8)
-        tb.tag_configure("code_body",   foreground="#d4efb3",
-                         background="#0d1a0d",
-                         font=("Consolas", fs),
-                         spacing1=0, spacing3=0, lmargin1=8, lmargin2=8)
-        tb.tag_configure("code_sep",    foreground="#1a2e1a",
-                         background="#0d1a0d",
-                         font=("Segoe UI", 6), spacing3=6)
-        # console output colours
-        tb.tag_configure("success",     foreground="#a6e3a1",   # green
-                         font=("Consolas", fs - 1))
-        tb.tag_configure("error_out",   foreground="#f38ba8",   # red
-                         font=("Consolas", fs - 1))
 
-        # action bar (last location – hidden until needed)
-        self._action_bar = ctk.CTkFrame(frame, fg_color=CLR_ACTION, corner_radius=8)
+        # message bubble tags
+        tb.tag_configure("user",
+                         foreground=CLR_USER,
+                         background=CLR_USER_BG,
+                         font=("Segoe UI", fs),
+                         spacing1=4, spacing3=4,
+                         lmargin1=12, lmargin2=12, rmargin=12)
+        tb.tag_configure("agent",
+                         foreground=CLR_AGENT,
+                         font=("Segoe UI", fs),
+                         spacing1=2, spacing3=6,
+                         lmargin1=2, lmargin2=2)
+        tb.tag_configure("system",
+                         foreground=CLR_SYSTEM,
+                         font=("Segoe UI", fs - 1, "italic"),
+                         spacing1=2, spacing3=2)
+        tb.tag_configure("error",
+                         foreground=CLR_ERROR,
+                         font=("Segoe UI", fs - 1))
+        tb.tag_configure("label",
+                         foreground="#334155",
+                         font=("Segoe UI", 10, "bold"),
+                         spacing1=14, spacing3=2)
+        # code blocks
+        tb.tag_configure("code_header",
+                         foreground="#052e16", background="#86efac",
+                         font=("Segoe UI", fs - 2, "bold"),
+                         spacing1=8, spacing3=0,
+                         lmargin1=0, lmargin2=0)
+        tb.tag_configure("code_body",
+                         foreground="#d1fae5", background="#0a1a0e",
+                         font=("Consolas", fs),
+                         spacing1=0, spacing3=0,
+                         lmargin1=14, lmargin2=14)
+        tb.tag_configure("code_sep",
+                         foreground="#0a1a0e", background="#0a1a0e",
+                         font=("Segoe UI", 5), spacing3=8)
+        # console output
+        tb.tag_configure("success",
+                         foreground="#4ade80",
+                         font=("Consolas", fs - 1),
+                         spacing1=1, spacing3=1,
+                         lmargin1=8, lmargin2=8)
+        tb.tag_configure("error_out",
+                         foreground="#f87171",
+                         font=("Consolas", fs - 1),
+                         spacing1=1, spacing3=1,
+                         lmargin1=8, lmargin2=8)
+
+        # ── action bar (last location – hidden until needed) ──────────────────
+        self._action_bar = ctk.CTkFrame(frame, fg_color=CLR_ACTION,
+                                         corner_radius=0, height=38)
         self._action_label = ctk.CTkLabel(self._action_bar, text="",
-                                           font=("Segoe UI", 12),
-                                           text_color="#89b4fa", anchor="w")
-        self._action_label.pack(side="left", padx=(10, 6), pady=6,
+                                           font=("Segoe UI", 11),
+                                           text_color=CLR_BLUE, anchor="w")
+        self._action_label.pack(side="left", padx=(14, 6), pady=8,
                                 fill="x", expand=True)
         self._btn_open_explorer = ctk.CTkButton(
-            self._action_bar, text="", width=160, height=30,
-            font=("Segoe UI", 12), fg_color=CLR_BLUE,
-            hover_color="#2575f5", command=self._open_last_location)
-        self._btn_open_explorer.pack(side="right", padx=8, pady=6)
+            self._action_bar, text="", width=150, height=26,
+            font=("Segoe UI", 11), fg_color=CLR_BLUE,
+            hover_color=CLR_BLUE_HOV, corner_radius=6,
+            command=self._open_last_location)
+        self._btn_open_explorer.pack(side="right", padx=10, pady=6)
         self._tr(self._btn_open_explorer, "open_explorer")
 
-        # quick actions
-        qa_frame = ctk.CTkFrame(frame, fg_color="transparent")
-        qa_frame.pack(fill="x", padx=24, pady=(0, 4))
+        # ── bottom toolbar (quick actions + auto-run + input) ─────────────────
+        bottom = ctk.CTkFrame(frame, fg_color=CLR_SIDEBAR,
+                               corner_radius=0, border_width=0)
+        bottom.pack(fill="x")
+        ctk.CTkFrame(bottom, height=1, fg_color=CLR_BORDER,
+                     corner_radius=0).pack(fill="x")
+
+        # quick actions row
+        qa_frame = ctk.CTkFrame(bottom, fg_color="transparent")
+        qa_frame.pack(fill="x", padx=20, pady=(10, 6))
 
         qa_defs = [
             ("qa_downloads", self._qa_organize_downloads),
@@ -609,60 +822,83 @@ class DesktopAgentApp(ctk.CTk):
             ("qa_desktop",   self._qa_desktop_summary),
         ]
         for key, cmd in qa_defs:
-            btn = ctk.CTkButton(qa_frame, text="", height=34, font=("Segoe UI", 12),
-                                fg_color="#313244", hover_color="#45475a",
-                                text_color="#cdd6f4", corner_radius=8,
+            btn = ctk.CTkButton(qa_frame, text="", height=28,
+                                font=("Segoe UI", 11),
+                                fg_color=CLR_SURFACE,
+                                hover_color=CLR_NAV_ACT,
+                                text_color="#64748b",
+                                border_width=1, border_color=CLR_BORDER,
+                                corner_radius=14,
                                 command=cmd)
             btn.pack(side="left", padx=(0, 6))
             self._tr(btn, key)
 
-        # auto-run toggle row
-        ar_row = ctk.CTkFrame(frame, fg_color="transparent")
-        ar_row.pack(fill="x", padx=24, pady=(0, 6))
-        ar_lbl = ctk.CTkLabel(ar_row, text="", font=("Segoe UI", 12),
-                               text_color="#a6adc8")
-        ar_lbl.pack(side="left", padx=(0, 6))
+        # auto-run toggle (inline with quick actions, right side)
+        ar_lbl = ctk.CTkLabel(qa_frame, text="", font=("Segoe UI", 11),
+                               text_color="#334155")
+        ar_lbl.pack(side="right", padx=(6, 2))
         self._tr(ar_lbl, "lbl_autorun")
-        self._ar_switch = ctk.CTkSwitch(ar_row, variable=self._sv_auto, text="",
+        self._ar_switch = ctk.CTkSwitch(qa_frame, variable=self._sv_auto, text="",
                                          onvalue=True, offvalue=False,
                                          command=self._on_autorun_toggle,
-                                         width=44, height=22)
-        self._ar_switch.pack(side="left")
+                                         width=40, height=20,
+                                         button_color=CLR_BLUE,
+                                         button_hover_color=CLR_BLUE_HOV,
+                                         progress_color=CLR_BLUE)
+        self._ar_switch.pack(side="right")
 
-        # input row
-        row = ctk.CTkFrame(frame, fg_color="transparent")
-        row.pack(fill="x", padx=24, pady=(0, 18))
-        self._input_row = row
-
-        btn_clr = ctk.CTkButton(row, text="", width=74, height=46,
-                                 font=("Segoe UI", 14), fg_color="#45475a",
-                                 hover_color="#585b70", command=self._clear_chat)
-        btn_clr.pack(side="right", padx=(6, 0))
-        self._tr(btn_clr, "btn_clear")
-
-        self._send_btn = ctk.CTkButton(row, text="", width=110, height=46,
-                                        font=("Segoe UI", 14), fg_color=CLR_BLUE,
-                                        command=self._send_or_stop)
-        self._send_btn.pack(side="right", padx=(6, 0))
-        self._tr(self._send_btn, "btn_send")
-
-        self._chat_entry = ctk.CTkEntry(row, placeholder_text="",
-                                         font=("Segoe UI", self._font_size),
-                                         height=46, corner_radius=10)
-        self._chat_entry.pack(side="left", fill="x", expand=True)
+        # path suggestion bar — shown when agent lists folder options
+        self._path_bar = ctk.CTkFrame(bottom, fg_color=CLR_SURFACE, corner_radius=0)
+        self._path_bar_label = ctk.CTkLabel(
+            self._path_bar, text="📂  Set folder →",
+            font=("Segoe UI", 11), text_color=CLR_SYSTEM)
+        self._path_bar_label.pack(side="left", padx=(12, 6), pady=6)
+        self._path_chips_frame = ctk.CTkFrame(self._path_bar, fg_color="transparent")
+        self._path_chips_frame.pack(side="left", fill="x", expand=True, pady=4)
 
         # continue bar — shown after agent stops mid-task
-        self._continue_bar = ctk.CTkFrame(frame, fg_color="#1e3a1e", corner_radius=8)
+        self._continue_bar = ctk.CTkFrame(bottom, fg_color="#0c1f0c",
+                                           corner_radius=0, height=38)
         self._continue_btn = ctk.CTkButton(
-            self._continue_bar, text="", width=160, height=34,
-            font=("Segoe UI", 13, "bold"), fg_color="#2d6a2d",
-            hover_color="#3a8a3a", command=self._do_continue)
-        self._continue_btn.pack(side="left", padx=10, pady=6)
+            self._continue_bar, text="", width=140, height=26,
+            font=("Segoe UI", 12, "bold"), fg_color="#166534",
+            hover_color="#15803d", corner_radius=6, command=self._do_continue)
+        self._continue_btn.pack(side="left", padx=12, pady=6)
         ctk.CTkLabel(self._continue_bar,
                      text="Agent stopped — click to keep going",
-                     font=("Segoe UI", 12), text_color="#a6e3a1").pack(
+                     font=("Segoe UI", 11), text_color="#4ade80").pack(
             side="left", padx=(0, 10))
         self._tr(self._continue_btn, "btn_continue")
+
+        # input row
+        input_wrap = ctk.CTkFrame(bottom, fg_color=CLR_SURFACE,
+                                   corner_radius=12,
+                                   border_width=1, border_color=CLR_BORDER)
+        input_wrap.pack(fill="x", padx=20, pady=(0, 14))
+        self._input_row = input_wrap
+
+        self._chat_entry = ctk.CTkEntry(
+            input_wrap, placeholder_text="",
+            font=("Segoe UI", self._font_size),
+            height=44, corner_radius=12,
+            fg_color="transparent", border_width=0,
+            text_color="#e2e8f0")
+        self._chat_entry.pack(side="left", fill="x", expand=True, padx=(8, 0))
+
+        btn_clr = ctk.CTkButton(input_wrap, text="✕", width=36, height=34,
+                                 font=("Segoe UI", 13), fg_color="transparent",
+                                 hover_color=CLR_NAV_ACT, text_color="#475569",
+                                 corner_radius=8, command=self._clear_chat)
+        btn_clr.pack(side="right", padx=(0, 4), pady=5)
+
+        self._send_btn = ctk.CTkButton(
+            input_wrap, text="", width=90, height=34,
+            font=("Segoe UI", 13, "bold"), fg_color=CLR_BLUE,
+            hover_color=CLR_BLUE_HOV, corner_radius=8,
+            command=self._send_or_stop)
+        self._send_btn.pack(side="right", padx=(0, 6), pady=5)
+        self._tr(self._send_btn, "btn_send")
+
         self._chat_entry.bind("<Return>", lambda _e: self._send())
         self._tr(self._chat_entry, "chat_ph", attr="placeholder_text")
 
@@ -907,6 +1143,7 @@ class DesktopAgentApp(ctk.CTk):
             self._flash_focus_bar()
             return
         self._hide_continue_bar()
+        self._hide_path_bar()
         self._chat_entry.delete(0, "end")
         self._chat_append("You", msg, "user")
         self._log_msg("user", msg)
@@ -914,7 +1151,7 @@ class DesktopAgentApp(ctk.CTk):
 
     def _flash_focus_bar(self, _count: int = 0) -> None:
         """Briefly flash the focus bar orange to draw attention to it."""
-        colors = ["#5a3500", "#1e2a3a", "#5a3500", "#1e2a3a", "#5a3500", "#1e2a3a"]
+        colors = ["#3b1500", CLR_SURFACE, "#3b1500", CLR_SURFACE, "#3b1500", CLR_SURFACE]
         if _count < len(colors):
             self._focus_bar.configure(fg_color=colors[_count])
             self.after(160, lambda: self._flash_focus_bar(_count + 1))
@@ -937,17 +1174,34 @@ class DesktopAgentApp(ctk.CTk):
         self._timeout_id = self.after(
             self._TIMEOUT_MIN * 60 * 1000, self._on_timeout)
 
+        lang_header = (
+            "[LANGUAGE: Reply in Thai (ภาษาไทย) for all explanations and messages. "
+            "Code comments and variable names stay in English.]\n\n"
+            if self._lang == "th" else ""
+        )
+
+        home = str(Path.home())
+        common_paths = (
+            f"  • Desktop:   {home}\\Desktop\n"
+            f"  • Downloads: {home}\\Downloads\n"
+            f"  • Documents: {home}\\Documents\n"
+            f"  • Pictures:  {home}\\Pictures\n"
+        )
+
         if self._focus_path:
             fp = self._focus_path.replace("\\", "/")
             wd_header = (
-                f"[WORKING DIRECTORY: {fp}]\n"
-                f"IMPORTANT: Always start every code block with:\n"
-                f"  import os; os.chdir(r'{self._focus_path}')\n"
-                f"Never use any other directory unless the user explicitly asks.\n\n"
+                f"[WORKING DIRECTORY: {self._focus_path}]\n"
+                f"Default to this folder for ALL file tasks. "
+                f"Vague references like 'the folder', 'my files', 'here' mean THIS path.\n"
+                f"If the user asks about a DIFFERENT location, reply with a short message and list the most likely folder paths so the user can pick one. Use this format:\n"
+                f"  'Which folder? Here are some options:\n{common_paths}'\n"
+                f"List only real full Windows paths (e.g. C:\\Users\\...) — never guess or navigate without the user picking.\n"
+                f"Every code block MUST start with: import os; os.chdir(r'{self._focus_path}')\n\n"
             )
-            full_msg = wd_header + msg
+            full_msg = lang_header + wd_header + msg
         else:
-            full_msg = msg
+            full_msg = lang_header + msg
 
         def _run() -> None:
             tf = ThinkFilter()
@@ -1049,9 +1303,42 @@ class DesktopAgentApp(ctk.CTk):
         if self.agent:
             self.agent.auto_run = val
 
+    def _show_path_suggestions(self, paths: list[str]) -> None:
+        """Show clickable folder chips for paths the agent mentioned."""
+        for w in self._path_chips_frame.winfo_children():
+            w.destroy()
+        seen = set()
+        for p in paths:
+            p = p.rstrip("\\./,")
+            if p in seen or not Path(p).exists():
+                continue
+            seen.add(p)
+            label = Path(p).name or p
+            chip = ctk.CTkButton(
+                self._path_chips_frame,
+                text=f"📂  {label}",
+                font=("Segoe UI", 11),
+                height=26,
+                fg_color=CLR_NAV_ACT,
+                hover_color=CLR_BLUE,
+                text_color="#93c5fd",
+                border_width=1, border_color=CLR_BORDER,
+                corner_radius=13,
+                command=lambda path=p: self._pick_suggested_path(path),
+            )
+            chip.pack(side="left", padx=(0, 6))
+        if seen:
+            self._path_bar.pack(fill="x", before=self._input_row)
+
+    def _pick_suggested_path(self, path: str) -> None:
+        self._set_focus_path(path)
+        self._path_bar.pack_forget()
+
+    def _hide_path_bar(self) -> None:
+        self._path_bar.pack_forget()
+
     def _show_continue_bar(self) -> None:
-        self._continue_bar.pack(fill="x", padx=24, pady=(0, 6),
-                                before=self._input_row)
+        self._continue_bar.pack(fill="x", before=self._input_row)
 
     def _hide_continue_bar(self) -> None:
         self._continue_bar.pack_forget()
@@ -1092,6 +1379,9 @@ class DesktopAgentApp(ctk.CTk):
                         self._log_msg("agent", self._agent_buf.strip())
                         self._save_session()
                     self._detect_path(self._agent_buf)
+                    paths = _WIN_PATH.findall(self._agent_buf)
+                    if paths:
+                        self._show_path_suggestions(paths)
                     self._agent_buf = ""
                 elif tag == "system":
                     self._chat_append("System", content, "system")
@@ -1106,8 +1396,11 @@ class DesktopAgentApp(ctk.CTk):
     def _chat_append(self, sender: str, text: str, tag: str) -> None:
         tb = self._chat_box._textbox
         self._chat_box.configure(state="normal")
-        tb.insert("end", f"\n{sender}:\n", "label")
-        tb.insert("end", f"{text}\n", tag)
+        # sender label — uppercase, spaced
+        label_text = f"\n  {sender.upper()}  \n"
+        tb.insert("end", label_text, "label")
+        # message body
+        tb.insert("end", f"  {text}\n", tag)
         self._chat_box.configure(state="disabled")
         self._chat_box.see("end")
 
@@ -1140,6 +1433,18 @@ class DesktopAgentApp(ctk.CTk):
         prefix = "✗ " if is_err else "✓ "
         self._raw_append(f"{prefix}{text}\n", tag)
 
+    def _show_welcome(self) -> None:
+        """Render the welcome / user guide into the chat box as a system message."""
+        tb = self._chat_box._textbox
+        self._chat_box.configure(state="normal")
+        tb.insert("end", "\n  DESKTOP AGENT  \n", "label")
+        key = "welcome_th" if self._lang == "th" else "welcome"
+        for line in self._s(key).splitlines():
+            tb.insert("end", f"  {line}\n", "system")
+        tb.insert("end", "\n", "system")
+        self._chat_box.configure(state="disabled")
+        self._chat_box.see("1.0")
+
     def _clear_chat(self) -> None:
         self._chat_box.configure(state="normal")
         self._chat_box.delete("1.0", "end")
@@ -1147,6 +1452,7 @@ class DesktopAgentApp(ctk.CTk):
         if self.agent:
             self.agent.messages = []
         self._new_session()
+        self._show_welcome()
 
     # ── focus path ────────────────────────────────────────────────────────────
 
@@ -1157,9 +1463,9 @@ class DesktopAgentApp(ctk.CTk):
 
     def _set_focus_path(self, path: str) -> None:
         self._focus_path = path
-        self._focus_bar.configure(fg_color="#1e2a3a")
+        self._focus_bar.configure(fg_color=CLR_SURFACE)
         self._focus_label.configure(text=Path(path).name or path,
-                                     text_color="#89b4fa")
+                                     text_color="#93c5fd")
         self._folder_var.set(path)
         self._load_tree(path)
         self._chat_append("System", self._s("sys_focus_set", path=path), "system")
@@ -1167,7 +1473,7 @@ class DesktopAgentApp(ctk.CTk):
     def _clear_focus_path(self) -> None:
         self._focus_path = None
         self._focus_label.configure(text=self._s("focus_none"),
-                                     text_color="#f38ba8")
+                                     text_color=CLR_ERROR)
 
     def _set_focus_from_files(self) -> None:
         folder = self._folder_var.get()
@@ -1181,8 +1487,7 @@ class DesktopAgentApp(ctk.CTk):
         self._last_location = path
         p = Path(path)
         self._action_label.configure(text=f"📁  {p.name or path}  ({path})")
-        self._action_bar.pack(fill="x", padx=24, pady=(0, 4),
-                               before=self._chat_box)
+        self._action_bar.pack(fill="x", after=self._chat_box)
 
     def _open_last_location(self) -> None:
         if self._last_location:

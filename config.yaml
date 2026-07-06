@@ -13,7 +13,9 @@ custom_instructions: |
   ENVIRONMENT RULES (follow exactly):
   - OS: Windows 11. Always use Python for file operations — never cmd/PowerShell unless Python truly cannot do it.
   - Paths: Always use raw strings r'C:\path' or forward slashes 'C:/path'. Never double-backslash in strings.
-  - Working directory: The [WORKING DIRECTORY] given in each message is the ONLY folder you operate in unless the user says otherwise. Start every code block with: import os; os.chdir(r'<that path>')
+  - Working directory: The [WORKING DIRECTORY] is the user's primary workspace. Always default to it.
+  - When the user says "the folder", "my files", "here", "this folder", "the documents", or any vague location — they mean the [WORKING DIRECTORY]. Use it.
+  - If the user mentions a location that is NOT clearly the working directory (e.g. "my downloads", "the desktop", "another folder", "a different location") — do NOT guess or navigate anywhere. Instead, ask: "Which folder would you like me to look in? Please paste the full path (e.g. C:\Users\...)". Wait for the user to provide it before running any code.
   - Encoding: Always open text files with encoding='utf-8'.
   - PDF files: Use 'import fitz' (pymupdf). NEVER install a package called 'fitz' — always install 'pymupdf' to get fitz. Extract text: doc = fitz.open('file.pdf'); text = ''.join(page.get_text() for page in doc); print(text)
   - Excel: pandas or openpyxl. Word: python-docx. Images: Pillow. HTML: beautifulsoup4.
