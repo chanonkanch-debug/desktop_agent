@@ -5,123 +5,265 @@ color 0A
 
 echo.
 echo  =============================================
-echo   Desktop Agent - Automated Setup
+echo   Desktop Agent - Setup
 echo  =============================================
 echo.
 
-:: ── 1. Find Python ───────────────────────────────────────────────────────
-set "PYTHON="
+:: ─────────────────────────────────────────────────────────────────────────────
+:: 1. Find Python  (prefer 3.12 → 3.11 → 3.13, avoid 3.14+)
+:: ─────────────────────────────────────────────────────────────────────────────
+set "PY_CMD="
+set "PY_VER="
+set "PY_MAJ=0"
+set "PY_MIN=0"
 
-py --version >nul 2>&1
-if not errorlevel 1 set "PYTHON=py"
-if defined PYTHON goto :python_found
+:: If we already have a local Python 3.12 from a previous setup, use it first
+if exist "%~dp0python312\python.exe" (
+    set "PY_CMD=%~dp0python312\python.exe"
+    for /f "tokens=2" %%W in ('"%~dp0python312\python.exe" --version 2^>^&1') do set "PY_VER=%%W"
+    echo  [OK] Using local Python 3.12 at python312\
+    goto :parse_ver
+)
 
-python --version >nul 2>&1
-if not errorlevel 1 set "PYTHON=python"
-if defined PYTHON goto :python_found
-
-python3 --version >nul 2>&1
-if not errorlevel 1 set "PYTHON=python3"
-if defined PYTHON goto :python_found
-
-if exist "venv\Scripts\python.exe" set "PYTHON=%~dp0venv\Scripts\python.exe"
-if defined PYTHON goto :python_found
-
-for %%P in (
-    "%LocalAppData%\Programs\Python\Python314\python.exe"
-    "%LocalAppData%\Programs\Python\Python313\python.exe"
-    "%LocalAppData%\Programs\Python\Python312\python.exe"
-    "%LocalAppData%\Programs\Python\Python311\python.exe"
-    "%LocalAppData%\Programs\Python\Python310\python.exe"
-    "%ProgramFiles%\Python314\python.exe"
-    "%ProgramFiles%\Python313\python.exe"
-    "%ProgramFiles%\Python312\python.exe"
-) do (
-    if exist %%P (
-        set "PYTHON=%%~P"
-        goto :python_found
+:: Try py launcher for stable versions first
+for %%V in (3.12 3.11 3.13) do (
+    if not defined PY_CMD (
+        py -%%V --version >nul 2>&1
+        if not errorlevel 1 (
+            set "PY_CMD=py -%%V"
+            for /f "tokens=2" %%W in ('py -%%V --version 2^>^&1') do set "PY_VER=%%W"
+        )
     )
 )
 
-echo  [ERROR] Python not found. Install from https://python.org
-echo          Check "Add python.exe to PATH" during install, then re-run.
+:: Fallback: bare py / python / python3
+if not defined PY_CMD (
+    for %%C in (py python python3) do (
+        if not defined PY_CMD (
+            %%C --version >nul 2>&1
+            if not errorlevel 1 (
+                set "PY_CMD=%%C"
+                for /f "tokens=2" %%W in ('%%C --version 2^>^&1') do set "PY_VER=%%W"
+            )
+        )
+    )
+)
+
+:parse_ver
+if not defined PY_VER goto :python_bad
+
+for /f "tokens=1,2 delims=." %%A in ("%PY_VER%") do (
+    set "PY_MAJ=%%A"
+    set "PY_MIN=%%B"
+)
+
+:: Too old
+if %PY_MAJ% EQU 3 if %PY_MIN% LSS 10 (
+    echo  [WARN] Found Python %PY_VER% — too old (need 3.10+^).
+    set "PY_CMD="
+    goto :python_bad
+)
+
+:: Too new (3.14+) — some packages lack wheels
+if %PY_MAJ% EQU 3 if %PY_MIN% GEQ 14 (
+    echo  [WARN] Found Python %PY_VER% — too new. Some packages have no wheels yet.
+    set "PY_CMD="
+    goto :python_bad
+)
+
+echo  [OK] Python %PY_VER% found.
+goto :python_ok
+
+:python_bad
 echo.
-pause & exit /b 1
+echo  ┌──────────────────────────────────────────────────────────────────────┐
+echo  │  A compatible Python (3.10 – 3.13) was not found.                   │
+echo  │                                                                      │
+echo  │  This setup can download and install Python 3.12 for you.           │
+echo  │  It installs into this project folder only — no admin rights,       │
+echo  │  no changes to your system or PATH.                                  │
+echo  └──────────────────────────────────────────────────────────────────────┘
+echo.
+set /p "DL_PY=   Download Python 3.12 now? (Y/N): "
+if /i not "%DL_PY%"=="Y" (
+    echo.
+    echo  Manual install: https://www.python.org/downloads/release/python-3129/
+    echo  Check "Add python.exe to PATH", then re-run this setup.
+    echo.
+    pause & exit /b 1
+)
 
-:python_found
-for /f "tokens=*" %%v in ('"%PYTHON%" --version 2^>^&1') do echo  [OK] %%v found
+echo.
+echo  [INFO] Downloading Python 3.12.9 installer (~25 MB)...
+set "PY_INST=%TEMP%\python-3.12.9-amd64.exe"
+curl -# -L -o "%PY_INST%" "https://www.python.org/ftp/python/3.12.9/python-3.12.9-amd64.exe"
+if errorlevel 1 (
+    echo  [ERROR] Download failed. Check your internet connection.
+    pause & exit /b 1
+)
 
-:: ── 2. Check / start Ollama ──────────────────────────────────────────────
+echo  [INFO] Installing Python 3.12 into python312\ (no admin needed)...
+"%PY_INST%" /quiet InstallAllUsers=0 PrependPath=0 "TargetDir=%~dp0python312"
+if errorlevel 1 (
+    echo  [ERROR] Python 3.12 installation failed.
+    echo          Try installing manually from https://www.python.org/downloads/release/python-3129/
+    pause & exit /b 1
+)
+
+set "PY_CMD=%~dp0python312\python.exe"
+set "PY_VER=3.12.9"
+echo  [OK] Python 3.12 installed into python312\
+
+:python_ok
+
+:: ─────────────────────────────────────────────────────────────────────────────
+:: 2. Require Ollama
+:: ─────────────────────────────────────────────────────────────────────────────
 echo.
 where ollama >nul 2>&1
 if errorlevel 1 (
-    echo  [WARN] Ollama not installed. Get it from https://ollama.com/download
-    echo         After installing, re-run setup to pull the model.
-    goto :skip_ollama
+    echo  [ERROR] Ollama is not installed.
+    echo.
+    echo  Please install Ollama from:
+    echo    https://ollama.com/download
+    echo.
+    echo  After installing Ollama, re-run this setup.
+    echo.
+    pause & exit /b 1
 )
-
 echo  [OK] Ollama is installed.
 
+:: Start server if not already running
 curl -s http://localhost:11434/api/tags >nul 2>&1
 if errorlevel 1 (
-    echo  [INFO] Starting Ollama server in background...
+    echo  [INFO] Starting Ollama server...
     start /B ollama serve
-    timeout /t 4 /nobreak >nul
+    timeout /t 5 /nobreak >nul
 ) else (
     echo  [OK] Ollama server is running.
 )
 
-ollama list 2>nul | findstr /I "qwen2.5:14b" >nul 2>&1
-if not errorlevel 1 goto :model_ready
+:: ─────────────────────────────────────────────────────────────────────────────
+:: 3. Pick AI model
+:: ─────────────────────────────────────────────────────────────────────────────
+echo.
+echo  ┌──────────────────────────────────────────────────────────────────────┐
+echo  │                  Choose an AI model to download                      │
+echo  │                                                                      │
+echo  │  Larger models are smarter but need more RAM and disk space.         │
+echo  │  Minimum RAM: 8 GB for 8b models, 16 GB for 14b models.             │
+echo  └──────────────────────────────────────────────────────────────────────┘
+echo.
+echo    #   Model                Size    Notes
+echo    -   ----------------     ------  ------------------------------------
+echo    1   deepseek-r1:14b      9 GB    Best reasoning          [Recommended]
+echo    2   deepseek-r1:8b       5 GB    Fast, needs less RAM
+echo    3   deepseek-r1:1.5b     1 GB    Very fast, basic tasks only
+echo    4   qwen2.5:14b          9 GB    Strong at coding tasks
+echo    5   qwen2.5:7b           5 GB    Good at coding, lighter
+echo    6   llama3.1:8b          5 GB    Fast general purpose
+echo    7   Skip                         I already have a model pulled
+echo.
+set "MODEL_NAME="
+set /p "MODEL_CHOICE=   Enter number (1-7) then press Enter: "
+echo.
 
-echo.
-echo  [INFO] Downloading model qwen2.5:14b  (~8 GB, one-time download)
-echo         This will take a while - go make some tea!
-echo.
-ollama pull qwen2.5:14b
-if errorlevel 1 (
-    echo  [WARN] Pull failed. Run later:  ollama pull qwen2.5:14b
-) else (
-    echo  [OK] Model ready.
+if "%MODEL_CHOICE%"=="1" set "MODEL_NAME=deepseek-r1:14b"
+if "%MODEL_CHOICE%"=="2" set "MODEL_NAME=deepseek-r1:8b"
+if "%MODEL_CHOICE%"=="3" set "MODEL_NAME=deepseek-r1:1.5b"
+if "%MODEL_CHOICE%"=="4" set "MODEL_NAME=qwen2.5:14b"
+if "%MODEL_CHOICE%"=="5" set "MODEL_NAME=qwen2.5:7b"
+if "%MODEL_CHOICE%"=="6" set "MODEL_NAME=llama3.1:8b"
+if "%MODEL_CHOICE%"=="7" goto :skip_model
+
+if not defined MODEL_NAME (
+    echo  [WARN] Unrecognised choice — skipping model download.
+    goto :skip_model
 )
-goto :skip_ollama
 
-:model_ready
-echo  [OK] Model qwen2.5:14b already downloaded.
+:: Check if already downloaded
+ollama list 2>nul | findstr /I "%MODEL_NAME%" >nul 2>&1
+if not errorlevel 1 (
+    echo  [OK] %MODEL_NAME% is already downloaded.
+    goto :model_done
+)
 
-:skip_ollama
+echo  [INFO] Downloading %MODEL_NAME% — this may take a while.
+echo         You can cancel with Ctrl+C and re-run setup later.
+echo.
+ollama pull %MODEL_NAME%
+if errorlevel 1 (
+    echo  [WARN] Download failed. Run later:  ollama pull %MODEL_NAME%
+    goto :skip_model
+)
+echo  [OK] Model downloaded.
 
-:: ── 3. Create virtual environment ────────────────────────────────────────
+:model_done
+:: Write chosen model into config.yaml
+echo  [INFO] Updating config.yaml...
+powershell -NoProfile -Command ^
+  "(Get-Content 'config.yaml' -Raw) -replace '(?m)^model:.*', 'model: %MODEL_NAME%' | Set-Content 'config.yaml' -Encoding utf8" >nul 2>&1
+echo  [OK] config.yaml set to model: %MODEL_NAME%
+
+:skip_model
+
+:: ─────────────────────────────────────────────────────────────────────────────
+:: 4. Create virtual environment
+:: ─────────────────────────────────────────────────────────────────────────────
 echo.
 echo  [INFO] Setting up Python virtual environment...
-if exist "venv\Scripts\python.exe" goto :venv_exists
 
-"%PYTHON%" -m venv venv
+if exist "venv\Scripts\python.exe" (
+    echo  [OK] Virtual environment already exists.
+    goto :venv_done
+)
+
+%PY_CMD% -m venv venv
 if errorlevel 1 (
     echo  [ERROR] Failed to create virtual environment.
     pause & exit /b 1
 )
-echo  [OK] Virtual environment created.
-goto :venv_done
-
-:venv_exists
-echo  [OK] Virtual environment already exists.
+echo  [OK] Virtual environment created with Python %PY_VER%.
 
 :venv_done
 
-:: ── 4. Install packages ──────────────────────────────────────────────────
-echo  [INFO] Installing packages (may take a few minutes)...
-call venv\Scripts\activate.bat
+:: ─────────────────────────────────────────────────────────────────────────────
+:: 5. Install packages
+:: ─────────────────────────────────────────────────────────────────────────────
+echo.
+echo  [INFO] Upgrading pip...
 venv\Scripts\python.exe -m pip install --upgrade pip -q
+
+echo  [INFO] Installing setuptools (pinned for compatibility)...
 venv\Scripts\python.exe -m pip install "setuptools<70" -q
-venv\Scripts\python.exe -m pip install -r requirements.txt -q
+
+:: tiktoken: --prefer-binary avoids Rust/MSVC source compilation
+echo  [INFO] Installing tiktoken...
+venv\Scripts\python.exe -m pip install tiktoken --prefer-binary -q
 if errorlevel 1 (
-    echo  [ERROR] Package installation failed.
+    echo.
+    echo  [ERROR] tiktoken failed to install.
+    echo.
+    echo  This means there is no pre-built wheel for Python %PY_VER%.
+    echo  Delete the venv\ folder, then re-run setup and choose
+    echo  to download Python 3.12 when prompted.
+    echo.
     pause & exit /b 1
 )
-echo  [OK] Packages installed.
+echo  [OK] tiktoken installed.
 
-:: ── 5. Create launcher ───────────────────────────────────────────────────
+echo  [INFO] Installing remaining packages (may take a few minutes)...
+venv\Scripts\python.exe -m pip install -r requirements.txt -q
+if errorlevel 1 (
+    echo  [ERROR] Package installation failed. Check the errors above.
+    pause & exit /b 1
+)
+echo  [OK] All packages installed.
+
+:: ─────────────────────────────────────────────────────────────────────────────
+:: 6. Create launcher
+:: ─────────────────────────────────────────────────────────────────────────────
+echo.
 set "VENV_PYW=%~dp0venv\Scripts\pythonw.exe"
 set "VENV_PY=%~dp0venv\Scripts\python.exe"
 set "APP=%~dp0app.py"
@@ -137,19 +279,25 @@ set "APP=%~dp0app.py"
 ) > launch.bat
 echo  [OK] launch.bat created.
 
-:: ── 6. Desktop shortcut ──────────────────────────────────────────────────
+:: ─────────────────────────────────────────────────────────────────────────────
+:: 7. Desktop shortcut
+:: ─────────────────────────────────────────────────────────────────────────────
 set "LNK=%USERPROFILE%\Desktop\Desktop Agent.lnk"
 set "LAUNCH=%~dp0launch.bat"
+set "ICON=%~dp0icon.ico"
 
-powershell -NoProfile -Command "$sh=New-Object -ComObject WScript.Shell; $sc=$sh.CreateShortcut('%LNK%'); $sc.TargetPath='%LAUNCH%'; $sc.WorkingDirectory='%~dp0'; $sc.IconLocation='%~dp0icon.ico'; $sc.WindowStyle=7; $sc.Save()" >nul 2>&1
+powershell -NoProfile -Command ^
+  "$sh=New-Object -ComObject WScript.Shell; $sc=$sh.CreateShortcut('%LNK%'); $sc.TargetPath='%LAUNCH%'; $sc.WorkingDirectory='%~dp0'; $sc.IconLocation='%ICON%'; $sc.WindowStyle=7; $sc.Save()" >nul 2>&1
 
 if exist "%LNK%" (
-    echo  [OK] "Desktop Agent" shortcut created on your Desktop.
+    echo  [OK] Desktop shortcut created.
 ) else (
-    echo  [WARN] Could not create shortcut - use launch.bat directly.
+    echo  [WARN] Could not create shortcut — use launch.bat directly.
 )
 
-:: ── Done ─────────────────────────────────────────────────────────────────
+:: ─────────────────────────────────────────────────────────────────────────────
+:: Done
+:: ─────────────────────────────────────────────────────────────────────────────
 echo.
 echo  =============================================
 echo   All done!
