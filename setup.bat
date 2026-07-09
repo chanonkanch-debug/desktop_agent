@@ -26,24 +26,38 @@ if exist "%~dp0python312\python.exe" (
 )
 
 :: Try py launcher for stable versions first
+:: NOTE: "py -X.Y --version" can exit 0 even when that version isn't
+:: installed (it just prints "[ERROR] No runtime installed..."), so the
+:: output text is validated instead of trusting errorlevel alone.
 for %%V in (3.12 3.11 3.13) do (
     if not defined PY_CMD (
-        py -%%V --version >nul 2>&1
-        if not errorlevel 1 (
-            set "PY_CMD=py -%%V"
-            for /f "tokens=2" %%W in ('py -%%V --version 2^>^&1') do set "PY_VER=%%W"
+        for /f "tokens=1,2" %%T in ('py -%%V --version 2^>^&1') do (
+            if /i "%%T"=="Python" (
+                echo %%U| findstr /r "^[0-9]" >nul
+                if not errorlevel 1 (
+                    set "PY_CMD=py -%%V"
+                    set "PY_VER=%%U"
+                )
+            )
         )
     )
 )
 
 :: Fallback: bare py / python / python3
+:: NOTE: on Windows, "python" with no real install runs the Microsoft
+:: Store alias stub, which prints "Python was not found..." and also
+:: exits 0 — same validation is needed here.
 if not defined PY_CMD (
     for %%C in (py python python3) do (
         if not defined PY_CMD (
-            %%C --version >nul 2>&1
-            if not errorlevel 1 (
-                set "PY_CMD=%%C"
-                for /f "tokens=2" %%W in ('%%C --version 2^>^&1') do set "PY_VER=%%W"
+            for /f "tokens=1,2" %%T in ('%%C --version 2^>^&1') do (
+                if /i "%%T"=="Python" (
+                    echo %%U| findstr /r "^[0-9]" >nul
+                    if not errorlevel 1 (
+                        set "PY_CMD=%%C"
+                        set "PY_VER=%%U"
+                    )
+                )
             )
         )
     )
@@ -55,6 +69,19 @@ if not defined PY_VER goto :python_bad
 for /f "tokens=1,2 delims=." %%A in ("%PY_VER%") do (
     set "PY_MAJ=%%A"
     set "PY_MIN=%%B"
+)
+
+:: Guard against a garbage/non-numeric version string reaching the EQU/LSS
+:: comparisons below — a bad value there is a batch syntax error, not a
+:: clean failure, and would silently kill the whole script.
+set "VALID_VER=1"
+if not defined PY_MAJ set "VALID_VER="
+if not defined PY_MIN set "VALID_VER="
+for /f "delims=0123456789" %%z in ("%PY_MAJ%%PY_MIN%") do set "VALID_VER="
+if not defined VALID_VER (
+    echo  [WARN] Could not parse Python version from "%PY_VER%".
+    set "PY_CMD="
+    goto :python_bad
 )
 
 :: Too old
@@ -214,8 +241,21 @@ echo.
 echo  [INFO] Setting up Python virtual environment...
 
 if exist "venv\Scripts\python.exe" (
-    echo  [OK] Virtual environment already exists.
-    goto :venv_done
+    set "VENV_MAJ="
+    set "VENV_MIN="
+    for /f "tokens=2" %%W in ('venv\Scripts\python.exe --version 2^>^&1') do (
+        for /f "tokens=1,2 delims=." %%A in ("%%W") do (
+            set "VENV_MAJ=%%A"
+            set "VENV_MIN=%%B"
+        )
+    )
+    if "!VENV_MAJ!.!VENV_MIN!"=="%PY_MAJ%.%PY_MIN%" (
+        echo  [OK] Virtual environment already exists ^(Python !VENV_MAJ!.!VENV_MIN!^).
+        goto :venv_done
+    )
+    echo  [WARN] Existing venv uses Python !VENV_MAJ!.!VENV_MIN!, but %PY_MAJ%.%PY_MIN% is selected.
+    echo  [INFO] Removing and recreating virtual environment...
+    rmdir /s /q venv
 )
 
 %PY_CMD% -m venv venv
