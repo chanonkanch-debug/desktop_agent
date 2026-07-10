@@ -87,7 +87,7 @@ def warm_model(api_base: str, model: str) -> bool:
             "model": model,
             "prompt": "hi",
             "stream": False,
-            "keep_alive": "10m",
+            "keep_alive": -1,
         }).encode()
         req = urllib.request.Request(
             f"{api_base}/api/generate",
