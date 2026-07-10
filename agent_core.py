@@ -76,6 +76,31 @@ def check_ollama(api_base: str, model: str) -> tuple[bool, list[str]]:
     return ok, available
 
 
+def warm_model(api_base: str, model: str) -> bool:
+    """
+    Send a tiny generate request to force Ollama to load the model into memory.
+    Blocks until the model is ready. Returns True on success.
+    """
+    try:
+        import json
+        data = json.dumps({
+            "model": model,
+            "prompt": "hi",
+            "stream": False,
+            "keep_alive": "10m",
+        }).encode()
+        req = urllib.request.Request(
+            f"{api_base}/api/generate",
+            data=data,
+            headers={"Content-Type": "application/json"},
+        )
+        with urllib.request.urlopen(req, timeout=300) as resp:
+            resp.read()
+        return True
+    except Exception:
+        return False
+
+
 def build_interpreter(cfg: dict):
     from interpreter import interpreter
 

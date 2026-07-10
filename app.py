@@ -1108,11 +1108,22 @@ class DesktopAgentApp(ctk.CTk):
                 return
             try:
                 self.agent = agent_core.build_interpreter(self.cfg)
-                self._q.put(("system", self._s("sys_ready", model=self.cfg["model"])))
-                self.after(0, lambda: self._status.configure(
-                    text=f"● {self.cfg['model']}", text_color=CLR_CODE))
             except Exception as exc:
                 self._q.put(("error", self._s("sys_fail", err=exc)))
+                return
+
+            # Warm up: load the model into memory now so the first message is instant.
+            # On a slow/CPU-only machine this can take 1-3 minutes — show clear status.
+            self.after(0, lambda: self._status.configure(
+                text="⏳ loading model…", text_color="#f59e0b"))
+            self._q.put(("system",
+                f"Loading {self.cfg['model']} into memory — "
+                "first run may take 1–3 minutes on this PC. Please wait…"))
+            agent_core.warm_model(self.cfg["api_base"], self.cfg["model"])
+
+            self._q.put(("system", self._s("sys_ready", model=self.cfg["model"])))
+            self.after(0, lambda: self._status.configure(
+                text=f"● {self.cfg['model']}", text_color=CLR_CODE))
 
         threading.Thread(target=_run, daemon=True).start()
 

@@ -28,3 +28,7 @@ desktop.ini
 # Logs and temp
 *.log
 *.tmp
+
+# Debug / diagnostic tools (local use only)
+diagnose.bat
+diagnose_report.txt

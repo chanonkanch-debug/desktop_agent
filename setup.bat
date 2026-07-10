@@ -278,8 +278,8 @@ echo  [INFO] Installing setuptools (pinned for compatibility)...
 venv\Scripts\python.exe -m pip install "setuptools<70" -q
 
 :: tiktoken: --prefer-binary avoids Rust/MSVC source compilation
-echo  [INFO] Installing tiktoken...
-venv\Scripts\python.exe -m pip install tiktoken --prefer-binary -q
+echo  [INFO] Installing tiktoken (you will see download progress)...
+venv\Scripts\python.exe -m pip install tiktoken --prefer-binary
 if errorlevel 1 (
     echo.
     echo  [ERROR] tiktoken failed to install.
@@ -292,8 +292,10 @@ if errorlevel 1 (
 )
 echo  [OK] tiktoken installed.
 
-echo  [INFO] Installing remaining packages (may take a few minutes)...
-venv\Scripts\python.exe -m pip install -r requirements.txt -q
+echo  [INFO] Installing remaining packages — this can take 5-15 minutes.
+echo         You will see each package as it downloads. Do not close this window.
+echo.
+venv\Scripts\python.exe -m pip install -r requirements.txt
 if errorlevel 1 (
     echo  [ERROR] Package installation failed. Check the errors above.
     pause & exit /b 1
